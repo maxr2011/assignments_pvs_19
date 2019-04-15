@@ -8,7 +8,7 @@
 
     <properties>
         <basepath>/demo</basepath>
-        <tomcat.version>8.5.13</tomcat.version>
+        <tomcat.version>8.5.34</tomcat.version>
         <protobuf.version>3.2.0</protobuf.version>
         <grpc.version>1.2.0</grpc.version>
     </properties>
