@@ -38,7 +38,6 @@ public class PersonServlet extends javax.servlet.http.HttpServlet
         } // 3 complete person list
         else {
             resultList = personManagement.getAllPersons();
-            response.getWriter().print(JSONHelper.generateJSONFromList(resultList));
         }
 
         response.getWriter().print(JSONHelper.generateJSONFromList(resultList));
