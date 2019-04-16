@@ -23,6 +23,8 @@ public class JSONHelper {
         for(Person p : specificPersonList) {
             JSON += p.toJSON();
             i++;
+            if(i == specificPersonList.size()) break;
+            JSON += Consts.JSON_COMMA_SEPERATOR;
         }
 
         JSON += Consts.JSON_OBJECT_BRACKETS_CLOSE;
