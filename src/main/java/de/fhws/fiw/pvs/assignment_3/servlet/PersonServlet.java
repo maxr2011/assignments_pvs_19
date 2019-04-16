@@ -40,6 +40,7 @@ public class PersonServlet extends javax.servlet.http.HttpServlet
             resultList = personManagement.getAllPersons();
         }
 
+        response.setHeader("Content-Type", "application/json");
         response.getWriter().print(JSONHelper.generateJSONFromList(resultList));
     }
 
@@ -56,6 +57,7 @@ public class PersonServlet extends javax.servlet.http.HttpServlet
         List<Person> personCreatedList = new ArrayList<>();
         personCreatedList.add(person);
 
+        response.setHeader("Content-Type", "application/json");
         response.getWriter().print(JSONHelper.generateJSONFromList(personCreatedList));
 
     }
