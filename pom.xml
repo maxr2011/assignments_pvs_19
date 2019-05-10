@@ -177,11 +177,12 @@
             <artifactId>grpc-protobuf</artifactId>
             <version>${grpc.version}</version>
         </dependency>
+        <!-- not to use with assignment 5
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-okhttp</artifactId>
             <version>${grpc.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>io.grpc</groupId>
             <artifactId>grpc-netty</artifactId>

@@ -1,5 +1,22 @@
+/*
+ * Copyright 2019 University of Applied Sciences Würzburg-Schweinfurt, Germany
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
+
 import de.fhws.fiw.pvs.assignment_5.example.models.PersonModel;
 import de.fhws.fiw.pvs.assignment_5.sutton.client.Link;
 import okhttp3.*;
@@ -32,10 +49,10 @@ public class TestExamples
 	{
 		this.client = new OkHttpClient( );
 		this.genson = new GensonBuilder( ).setSkipNull( true )
-										  .useIndentation( true )
-										  .useDateAsTimestamp( false )
-										  .useDateFormat( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ) )
-										  .create( );
+				.useIndentation( true )
+				.useDateAsTimestamp( false )
+				.useDateFormat( new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss" ) )
+				.create( );
 	}
 
 	@After
@@ -54,8 +71,8 @@ public class TestExamples
 		person.setFirstName( "Peter" );
 		person.setLastName( "Braun" );
 		final RequestBody body = RequestBody.create(
-			MediaType.parse( theCreateLink.getMediaType( ) ),
-			this.genson.serialize( person ) );
+				MediaType.parse( theCreateLink.getMediaType( ) ),
+				this.genson.serialize( person ) );
 		final Request requestPost = new Request.Builder( ).url( theCreateLink.getUrl( ) ).post( body ).build( );
 		final Response responsePost = executeRequest( requestPost );
 		assertTrue( "Object was not created!", responsePost.code( ) == 201 );
@@ -68,8 +85,8 @@ public class TestExamples
 
 		final Link theGetAllLink = getAllPersons.get( );
 		final Request requestGetAll = new Request.Builder( ).url( theGetAllLink.getUrl( ) )
-															.get( )
-															.build( );
+				.get( )
+				.build( );
 
 		final Response responseGetAll = executeRequest( requestGetAll );
 
@@ -87,8 +104,8 @@ public class TestExamples
 		person.setFirstName( "Peter" );
 		person.setLastName( "Braun" );
 		final RequestBody body = RequestBody.create(
-			MediaType.parse( theCreateLink.getMediaType( ) ),
-			this.genson.serialize( person ) );
+				MediaType.parse( theCreateLink.getMediaType( ) ),
+				this.genson.serialize( person ) );
 		final Request requestPost = new Request.Builder( ).url( theCreateLink.getUrl( ) ).post( body ).build( );
 		final Response responsePost = executeRequest( requestPost );
 		assertTrue( "Object was not created!", responsePost.code( ) == 201 );
@@ -99,19 +116,19 @@ public class TestExamples
 		final Response responseGetSingle = executeRequest( requestGetSingle );
 
 		final PersonModel personResponse =
-			this.genson.deserialize( responseGetSingle.body( ).string( ), PersonModel.class );
+				this.genson.deserialize( responseGetSingle.body( ).string( ), PersonModel.class );
 		assertEquals( "Peter", personResponse.getFirstName( ) );
 
 		/* Update this person */
 		final Optional<Link> linkToUpdate = getResponseHeaderLink( responseGetSingle, UPDATE_SINGLE_PERSON );
 		assertTrue( String.format( "No link of relType '%s' found.", UPDATE_SINGLE_PERSON ),
-			linkToUpdate.isPresent( ) );
+				linkToUpdate.isPresent( ) );
 
 		personResponse.setFirstName( "Julius" );
 
 		final RequestBody putBody = RequestBody.create(
-			MediaType.parse( linkToUpdate.get( ).getMediaType( ) ),
-			this.genson.serialize( personResponse ) );
+				MediaType.parse( linkToUpdate.get( ).getMediaType( ) ),
+				this.genson.serialize( personResponse ) );
 		final Request requestPut = new Request.Builder( ).url( linkToUpdate.get( ).getUrl( ) ).put( putBody ).build( );
 		final Response responsePut = executeRequest( requestPut );
 		assertTrue( "Object was not updated!", responsePut.code( ) == 204 );
@@ -146,9 +163,9 @@ public class TestExamples
 	protected Optional<Link> getResponseHeaderLink( final Response response, final String relType )
 	{
 		return response.headers( "Link" )
-					   .stream( )
-					   .map( v -> Link.parseFromHttpHeader( v ) )
-					   .filter( l -> l.getRelationType( ).equalsIgnoreCase( relType ) )
-					   .findFirst( );
+				.stream( )
+				.map( v -> Link.parseFromHttpHeader( v ) )
+				.filter( l -> l.getRelationType( ).equalsIgnoreCase( relType ) )
+				.findFirst( );
 	}
 }
