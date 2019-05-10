@@ -14,26 +14,21 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.api.states.persons;
+package de.fhws.fiw.pvs.assignment_5.zikzak;
 
-import de.fhws.fiw.pvs.assignment_5.example.database.DaoFactory;
-import de.fhws.fiw.pvs.assignment_5.example.models.PersonModel;
-import de.fhws.fiw.pvs.assignment_5.sutton.api.states.post.AbstractPostState;
-import de.fhws.fiw.pvs.assignment_5.sutton.database.results.NoContentResult;
+import de.fhws.fiw.pvs.assignment_5.sutton.AbstractStart;
 
-public class PostNewPerson extends AbstractPostState<PersonModel>
+public class Start extends AbstractStart
 {
-	public PostNewPerson( )
+	public static final String CONTEXT_PATH = "zikzak";
+
+	public static void main( final String[] args ) throws Exception
 	{
+		new Start( ).startTomcat( );
 	}
 
-	@Override protected NoContentResult saveModel( )
+	@Override protected String contextPath( )
 	{
-		return DaoFactory.getInstance( ).getPersonDao( ).create( this.modelToStore );
-	}
-
-	@Override protected void defineTransitionLinks( )
-	{
-
+		return CONTEXT_PATH;
 	}
 }

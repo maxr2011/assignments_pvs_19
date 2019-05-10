@@ -14,32 +14,32 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.api.states.persons;
+package de.fhws.fiw.pvs.assignment_5.zikzak.api.states.users;
 
 
-import de.fhws.fiw.pvs.assignment_5.example.database.DaoFactory;
-import de.fhws.fiw.pvs.assignment_5.example.models.PersonModel;
 import de.fhws.fiw.pvs.assignment_5.sutton.api.states.get.AbstractGetState;
 import de.fhws.fiw.pvs.assignment_5.sutton.database.results.SingleModelResult;
+import de.fhws.fiw.pvs.assignment_5.zikzak.database.DaoFactory;
+import de.fhws.fiw.pvs.assignment_5.zikzak.models.UserModel;
 
 import javax.ws.rs.core.MediaType;
 
-public class GetSinglePerson extends AbstractGetState<PersonModel>
+public class GetSingleUser extends AbstractGetState<UserModel>
 {
-	public GetSinglePerson( )
+	public GetSingleUser( )
 	{
 	}
 
-	@Override protected SingleModelResult<PersonModel> loadModel( )
+	@Override protected SingleModelResult<UserModel> loadModel( )
 	{
-		return DaoFactory.getInstance( ).getPersonDao( ).readById( this.requestedId );
+		return DaoFactory.getInstance( ).getUserDao( ).readById( this.requestedId );
 	}
 
 	@Override protected void defineTransitionLinks( )
 	{
-		addLink( PersonUri.REL_PATH_ID, PersonRelTypes.UPDATE_SINGLE_PERSON, MediaType.APPLICATION_JSON,
+		addLink( UserUri.REL_PATH_ID, UserRelTypes.UPDATE_SINGLE_USER, MediaType.APPLICATION_JSON,
 			this.requestedId );
-		addLink( PersonUri.REL_PATH_ID, PersonRelTypes.DELETE_SINGLE_PERSON, MediaType.APPLICATION_JSON,
+		addLink( UserUri.REL_PATH_ID, UserRelTypes.DELETE_SINGLE_USER, MediaType.APPLICATION_JSON,
 			this.requestedId );
 	}
 }

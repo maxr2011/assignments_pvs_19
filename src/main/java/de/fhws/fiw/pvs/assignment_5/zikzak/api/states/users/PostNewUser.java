@@ -14,14 +14,26 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.database.inmemory;
+package de.fhws.fiw.pvs.assignment_5.zikzak.api.states.users;
 
+import de.fhws.fiw.pvs.assignment_5.sutton.api.states.post.AbstractPostState;
+import de.fhws.fiw.pvs.assignment_5.sutton.database.results.NoContentResult;
+import de.fhws.fiw.pvs.assignment_5.zikzak.database.DaoFactory;
+import de.fhws.fiw.pvs.assignment_5.zikzak.models.UserModel;
 
-import de.fhws.fiw.pvs.assignment_5.example.database.PersonDao;
-import de.fhws.fiw.pvs.assignment_5.example.models.PersonModel;
-import de.fhws.fiw.pvs.assignment_5.sutton.database.inmemory.AbstractInMemoryStorage;
-
-public class PersonInMemoryStorage extends AbstractInMemoryStorage<PersonModel> implements PersonDao
+public class PostNewUser extends AbstractPostState<UserModel>
 {
+	public PostNewUser( )
+	{
+	}
 
+	@Override protected NoContentResult saveModel( )
+	{
+		return DaoFactory.getInstance( ).getUserDao( ).create( this.modelToStore );
+	}
+
+	@Override protected void defineTransitionLinks( )
+	{
+
+	}
 }

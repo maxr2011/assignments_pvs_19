@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.api;
+package de.fhws.fiw.pvs.assignment_5.zikzak.api;
 
-import de.fhws.fiw.pvs.assignment_5.example.api.services.DispatcherService;
-import de.fhws.fiw.pvs.assignment_5.example.api.services.PersonService;
 import de.fhws.fiw.pvs.assignment_5.sutton.api.AbstractApplication;
+import de.fhws.fiw.pvs.assignment_5.zikzak.api.services.DispatcherService;
+import de.fhws.fiw.pvs.assignment_5.zikzak.api.services.UserService;
 
 import javax.ws.rs.ApplicationPath;
 import java.util.HashSet;
@@ -31,7 +31,7 @@ public class ExampleApplication extends AbstractApplication
 	{
 		final Set<Class<?>> returnValue = new HashSet<>( );
 
-		returnValue.add( PersonService.class );
+		returnValue.add( UserService.class );
 		returnValue.add( DispatcherService.class );
 
 		return returnValue;

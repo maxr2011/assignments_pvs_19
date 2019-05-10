@@ -16,9 +16,8 @@
 
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
-
-import de.fhws.fiw.pvs.assignment_5.example.models.PersonModel;
 import de.fhws.fiw.pvs.assignment_5.sutton.client.Link;
+import de.fhws.fiw.pvs.assignment_5.zikzak.models.UserModel;
 import okhttp3.*;
 import org.junit.After;
 import org.junit.Before;
@@ -31,14 +30,14 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class TestExamples
+public class TestZikZak
 {
-	private final static String BASE_URL = "http://localhost:8080/example/api";
-	private final static String CREATE_PERSON = "createPerson";
-	private final static String GET_ALL_PERSONS = "getAllPersons";
-	private final static String UPDATE_SINGLE_PERSON = "updatePerson";
-	private final static String DELETE_SINGLE_PERSON = "deletePerson";
-	private final static String GET_SINGLE_PERSON = "getPerson";
+	private final static String BASE_URL = "http://localhost:8080/zikzak/api";
+	private final static String CREATE_USER = "createUser";
+	private final static String GET_ALL_USERS = "getAllUsers";
+	private final static String UPDATE_SINGLE_USER = "updateUser";
+	private final static String DELETE_SINGLE_USER = "deleteUser";
+	private final static String GET_SINGLE_USER = "getUser";
 
 	private OkHttpClient client;
 
@@ -64,15 +63,15 @@ public class TestExamples
 	@Test
 	public void testPost( )
 	{
-		final Optional<Link> createPersonLink = callDispatcherAndGetHeaderLinkWithRelType( CREATE_PERSON );
+		final Optional<Link> createUserLink = callDispatcherAndGetHeaderLinkWithRelType( CREATE_USER );
 
-		final Link theCreateLink = createPersonLink.get( );
-		final PersonModel person = new PersonModel( );
-		person.setFirstName( "Peter" );
-		person.setLastName( "Braun" );
+		final Link theCreateLink = createUserLink.get( );
+		final UserModel user = new UserModel( );
+		user.setFirstName( "Peter" );
+		user.setLastName( "Braun" );
 		final RequestBody body = RequestBody.create(
 				MediaType.parse( theCreateLink.getMediaType( ) ),
-				this.genson.serialize( person ) );
+				this.genson.serialize( user ) );
 		final Request requestPost = new Request.Builder( ).url( theCreateLink.getUrl( ) ).post( body ).build( );
 		final Response responsePost = executeRequest( requestPost );
 		assertTrue( "Object was not created!", responsePost.code( ) == 201 );
@@ -81,9 +80,9 @@ public class TestExamples
 	@Test
 	public void testGetCollection( )
 	{
-		final Optional<Link> getAllPersons = callDispatcherAndGetHeaderLinkWithRelType( GET_ALL_PERSONS );
+		final Optional<Link> getAllUsers = callDispatcherAndGetHeaderLinkWithRelType( GET_ALL_USERS );
 
-		final Link theGetAllLink = getAllPersons.get( );
+		final Link theGetAllLink = getAllUsers.get( );
 		final Request requestGetAll = new Request.Builder( ).url( theGetAllLink.getUrl( ) )
 				.get( )
 				.build( );
@@ -96,39 +95,39 @@ public class TestExamples
 	@Test
 	public void testPut( ) throws Exception
 	{
-		final Optional<Link> createPersonLink = callDispatcherAndGetHeaderLinkWithRelType( CREATE_PERSON );
+		final Optional<Link> createUserLink = callDispatcherAndGetHeaderLinkWithRelType( CREATE_USER );
 
-		/* Create new person */
-		final Link theCreateLink = createPersonLink.get( );
-		final PersonModel person = new PersonModel( );
-		person.setFirstName( "Peter" );
-		person.setLastName( "Braun" );
+		/* Create new user */
+		final Link theCreateLink = createUserLink.get( );
+		final UserModel user = new UserModel( );
+		user.setFirstName( "Peter" );
+		user.setLastName( "Braun" );
 		final RequestBody body = RequestBody.create(
 				MediaType.parse( theCreateLink.getMediaType( ) ),
-				this.genson.serialize( person ) );
+				this.genson.serialize( user ) );
 		final Request requestPost = new Request.Builder( ).url( theCreateLink.getUrl( ) ).post( body ).build( );
 		final Response responsePost = executeRequest( requestPost );
 		assertTrue( "Object was not created!", responsePost.code( ) == 201 );
 
-		/* Get single person that was just created */
+		/* Get single user that was just created */
 		final String locationHeader = responsePost.header( "Location" );
 		final Request requestGetSingle = new Request.Builder( ).url( locationHeader ).get( ).build( );
 		final Response responseGetSingle = executeRequest( requestGetSingle );
 
-		final PersonModel personResponse =
-				this.genson.deserialize( responseGetSingle.body( ).string( ), PersonModel.class );
-		assertEquals( "Peter", personResponse.getFirstName( ) );
+		final UserModel userResponse =
+				this.genson.deserialize( responseGetSingle.body( ).string( ), UserModel.class );
+		assertEquals( "Peter", userResponse.getFirstName( ) );
 
-		/* Update this person */
-		final Optional<Link> linkToUpdate = getResponseHeaderLink( responseGetSingle, UPDATE_SINGLE_PERSON );
-		assertTrue( String.format( "No link of relType '%s' found.", UPDATE_SINGLE_PERSON ),
+		/* Update this user */
+		final Optional<Link> linkToUpdate = getResponseHeaderLink( responseGetSingle, UPDATE_SINGLE_USER );
+		assertTrue( String.format( "No link of relType '%s' found.", UPDATE_SINGLE_USER ),
 				linkToUpdate.isPresent( ) );
 
-		personResponse.setFirstName( "Julius" );
+		userResponse.setFirstName( "Julius" );
 
 		final RequestBody putBody = RequestBody.create(
 				MediaType.parse( linkToUpdate.get( ).getMediaType( ) ),
-				this.genson.serialize( personResponse ) );
+				this.genson.serialize( userResponse ) );
 		final Request requestPut = new Request.Builder( ).url( linkToUpdate.get( ).getUrl( ) ).put( putBody ).build( );
 		final Response responsePut = executeRequest( requestPut );
 		assertTrue( "Object was not updated!", responsePut.code( ) == 204 );

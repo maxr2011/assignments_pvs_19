@@ -14,38 +14,38 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.api.states.persons;
+package de.fhws.fiw.pvs.assignment_5.zikzak.api.states.users;
 
-import de.fhws.fiw.pvs.assignment_5.example.database.DaoFactory;
-import de.fhws.fiw.pvs.assignment_5.example.models.PersonModel;
 import de.fhws.fiw.pvs.assignment_5.sutton.api.queries.AbstractQuery;
 import de.fhws.fiw.pvs.assignment_5.sutton.api.states.get.AbstractGetCollectionState;
 import de.fhws.fiw.pvs.assignment_5.sutton.database.DatabaseException;
 import de.fhws.fiw.pvs.assignment_5.sutton.database.results.CollectionModelResult;
+import de.fhws.fiw.pvs.assignment_5.zikzak.database.DaoFactory;
+import de.fhws.fiw.pvs.assignment_5.zikzak.models.UserModel;
 
 import javax.ws.rs.core.MediaType;
 import java.util.function.Predicate;
 
-public class GetAllPersons extends AbstractGetCollectionState<PersonModel>
+public class GetAllUsers extends AbstractGetCollectionState<UserModel>
 {
-	public GetAllPersons( )
+	public GetAllUsers( )
 	{
 	}
 
 	@Override protected void defineTransitionLinks( )
 	{
-		addLink( PersonUri.REL_PATH, PersonRelTypes.CREATE_PERSON, MediaType.APPLICATION_JSON );
+		addLink( UserUri.REL_PATH, UserRelTypes.CREATE_USER, MediaType.APPLICATION_JSON );
 	}
 
-	public static class GetAllPersonsQuery extends AbstractQuery<PersonModel>
+	public static class GetAllUsersQuery extends AbstractQuery<UserModel>
 	{
-		@Override protected CollectionModelResult<PersonModel> doExecuteQuery( ) throws DatabaseException
+		@Override protected CollectionModelResult<UserModel> doExecuteQuery( ) throws DatabaseException
 		{
-			return DaoFactory.getInstance( ).getPersonDao( ).readByPredicate( all( ) );
+			return DaoFactory.getInstance( ).getUserDao( ).readByPredicate( all( ) );
 		}
 	}
 
-	public static class FilterByNames extends AbstractQuery<PersonModel>
+	public static class FilterByNames extends AbstractQuery<UserModel>
 	{
 		protected String firstName;
 
@@ -57,12 +57,12 @@ public class GetAllPersons extends AbstractGetCollectionState<PersonModel>
 			this.lastName = lastName;
 		}
 
-		@Override protected CollectionModelResult<PersonModel> doExecuteQuery( ) throws DatabaseException
+		@Override protected CollectionModelResult<UserModel> doExecuteQuery( ) throws DatabaseException
 		{
-			return DaoFactory.getInstance( ).getPersonDao( ).readByPredicate( byFirstNameAndLastName( ) );
+			return DaoFactory.getInstance( ).getUserDao( ).readByPredicate( byFirstNameAndLastName( ) );
 		}
 
-		protected Predicate<PersonModel> byFirstNameAndLastName( )
+		protected Predicate<UserModel> byFirstNameAndLastName( )
 		{
 			return p -> p.getFirstName( ).equalsIgnoreCase( this.firstName ) &&
 				p.getLastName( ).equalsIgnoreCase( this.lastName );

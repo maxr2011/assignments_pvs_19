@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.api.states;
+package de.fhws.fiw.pvs.assignment_5.zikzak.database;
 
-import de.fhws.fiw.pvs.assignment_5.example.api.states.persons.PersonRelTypes;
-import de.fhws.fiw.pvs.assignment_5.example.api.states.persons.PersonUri;
-import de.fhws.fiw.pvs.assignment_5.sutton.api.states.get.AbstractGetDispatcherState;
+import de.fhws.fiw.pvs.assignment_5.sutton.database.IDatabaseAccessObject;
+import de.fhws.fiw.pvs.assignment_5.zikzak.models.UserModel;
 
-import javax.ws.rs.core.MediaType;
-
-public class DispatcherState extends AbstractGetDispatcherState
+public interface UserDao extends IDatabaseAccessObject<UserModel>
 {
-	@Override protected void defineTransitionLinks( )
-	{
-		addLink( PersonUri.REL_PATH, PersonRelTypes.CREATE_PERSON, MediaType.APPLICATION_JSON );
-		addLink( PersonUri.REL_PATH, PersonRelTypes.GET_ALL_PERSONS, MediaType.APPLICATION_JSON );
-	}
 }

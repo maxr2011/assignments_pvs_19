@@ -14,28 +14,28 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.api.services;
+package de.fhws.fiw.pvs.assignment_5.zikzak.api.services;
 
-import de.fhws.fiw.pvs.assignment_5.example.api.states.persons.*;
-import de.fhws.fiw.pvs.assignment_5.example.models.PersonModel;
 import de.fhws.fiw.pvs.assignment_5.sutton.api.queries.PagingBehaviorUsingOffsetSize;
 import de.fhws.fiw.pvs.assignment_5.sutton.api.services.AbstractService;
+import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.users.*;
+import de.fhws.fiw.pvs.assignment_5.zikzak.models.UserModel;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path( "persons" )
-public class PersonService extends AbstractService
+@Path( "users" )
+public class UserService extends AbstractService
 {
 	@GET
 	@Produces( MediaType.APPLICATION_JSON )
-	public Response getAllPersons( )
+	public Response getAllUsers( )
 	{
-		final GetAllPersons.GetAllPersonsQuery query = new GetAllPersons.GetAllPersonsQuery( );
+		final GetAllUsers.GetAllUsersQuery query = new GetAllUsers.GetAllUsersQuery( );
 		query.setPagingBehavior( new PagingBehaviorUsingOffsetSize( 0, 100 ) );
 
-		return new GetAllPersons( ).setQuery( query )
+		return new GetAllUsers( ).setQuery( query )
 								   .setUriInfo( this.uriInfo )
 								   .setRequest( this.request )
 								   .setHttpServletRequest( this.httpServletRequest )
@@ -46,9 +46,9 @@ public class PersonService extends AbstractService
 	@GET
 	@Path( "{id}" )
 	@Produces( MediaType.APPLICATION_JSON )
-	public Response getSinglePersons( @PathParam( "id" ) final long id )
+	public Response getSingleUsers( @PathParam( "id" ) final long id )
 	{
-		return new GetSinglePerson( ).setRequestedId( id )
+		return new GetSingleUser( ).setRequestedId( id )
 									 .setUriInfo( this.uriInfo )
 									 .setRequest( this.request )
 									 .setHttpServletRequest( this.httpServletRequest )
@@ -58,9 +58,9 @@ public class PersonService extends AbstractService
 
 	@POST
 	@Consumes( MediaType.APPLICATION_JSON )
-	public Response createSinglePersons( final PersonModel personModel )
+	public Response createSingleUsers( final UserModel personModel )
 	{
-		return new PostNewPerson( ).setModelToStore( personModel )
+		return new PostNewUser( ).setModelToStore( personModel )
 								   .setUriInfo( this.uriInfo )
 								   .setRequest( this.request )
 								   .setHttpServletRequest( this.httpServletRequest )
@@ -71,10 +71,10 @@ public class PersonService extends AbstractService
 	@PUT
 	@Path( "{id}" )
 	@Consumes( MediaType.APPLICATION_JSON )
-	public Response updateSinglePersons( @PathParam( "id" ) final long id, final PersonModel personModel )
+	public Response updateSingleUsers( @PathParam( "id" ) final long id, final UserModel personModel )
 	{
 		personModel.setId( id );
-		return new PutSinglePerson( ).setModelToUpdate( personModel )
+		return new PutSingleUser( ).setModelToUpdate( personModel )
 									 .setUriInfo( this.uriInfo )
 									 .setRequest( this.request )
 									 .setHttpServletRequest( this.httpServletRequest )
@@ -85,9 +85,9 @@ public class PersonService extends AbstractService
 	@DELETE
 	@Path( "{id}" )
 	@Consumes( MediaType.APPLICATION_JSON )
-	public Response deleteSinglePersons( @PathParam( "id" ) final long id )
+	public Response deleteSingleUsers( @PathParam( "id" ) final long id )
 	{
-		return new DeleteSinglePerson( ).setModelIdToDelete( id )
+		return new DeleteSingleUser( ).setModelIdToDelete( id )
 										.setUriInfo( this.uriInfo )
 										.setRequest( this.request )
 										.setHttpServletRequest( this.httpServletRequest )

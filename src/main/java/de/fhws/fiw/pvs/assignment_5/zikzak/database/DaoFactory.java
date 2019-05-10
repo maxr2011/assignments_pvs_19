@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.database;
+package de.fhws.fiw.pvs.assignment_5.zikzak.database;
 
-import de.fhws.fiw.pvs.assignment_5.example.database.inmemory.PersonInMemoryStorage;
+import de.fhws.fiw.pvs.assignment_5.zikzak.database.inmemory.UserInMemoryStorage;
 
 public class DaoFactory
 {
@@ -32,15 +32,15 @@ public class DaoFactory
 		return INSTANCE;
 	}
 
-	private final PersonDao personDao;
+	private final UserDao userDao;
 
 	private DaoFactory( )
 	{
-		this.personDao = new PersonInMemoryStorage( );
+		this.userDao = new UserInMemoryStorage( );
 	}
 
-	public PersonDao getPersonDao( )
+	public UserDao getUserDao( )
 	{
-		return this.personDao;
+		return this.userDao;
 	}
 }

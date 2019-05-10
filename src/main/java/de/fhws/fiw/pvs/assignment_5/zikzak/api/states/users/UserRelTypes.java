@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.api.states.persons;
+package de.fhws.fiw.pvs.assignment_5.zikzak.api.states.users;
 
-
-import de.fhws.fiw.pvs.assignment_5.example.Start;
-
-public interface PersonUri
+public interface UserRelTypes
 {
-
-	String PATH_ELEMENT = "persons";
-	String REL_PATH = Start.CONTEXT_PATH + "/api/" + PATH_ELEMENT;
-	String REL_PATH_ID = REL_PATH + "/{id}";
+	String CREATE_USER = "createUser";
+	String GET_ALL_USERS = "getAllUsers";
+	String UPDATE_SINGLE_USER = "updateUser";
+	String DELETE_SINGLE_USER = "deleteUser";
+	String GET_SINGLE_USER = "getUser";
 }

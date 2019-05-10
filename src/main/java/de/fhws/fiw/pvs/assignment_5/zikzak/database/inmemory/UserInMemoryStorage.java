@@ -14,21 +14,14 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example;
+package de.fhws.fiw.pvs.assignment_5.zikzak.database.inmemory;
 
-import de.fhws.fiw.pvs.assignment_5.sutton.AbstractStart;
 
-public class Start extends AbstractStart
+import de.fhws.fiw.pvs.assignment_5.sutton.database.inmemory.AbstractInMemoryStorage;
+import de.fhws.fiw.pvs.assignment_5.zikzak.database.UserDao;
+import de.fhws.fiw.pvs.assignment_5.zikzak.models.UserModel;
+
+public class UserInMemoryStorage extends AbstractInMemoryStorage<UserModel> implements UserDao
 {
-	public static final String CONTEXT_PATH = "example";
 
-	public static void main( final String[] args ) throws Exception
-	{
-		new Start( ).startTomcat( );
-	}
-
-	@Override protected String contextPath( )
-	{
-		return CONTEXT_PATH;
-	}
 }

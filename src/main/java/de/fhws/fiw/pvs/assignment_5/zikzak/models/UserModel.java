@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.models;
+package de.fhws.fiw.pvs.assignment_5.zikzak.models;
 
 import com.owlike.genson.annotation.JsonConverter;
 import com.owlike.genson.annotation.JsonIgnore;
@@ -25,7 +25,7 @@ import org.glassfish.jersey.linking.InjectLink;
 import javax.ws.rs.core.Link;
 import java.time.LocalDate;
 
-public class PersonModel extends AbstractModel
+public class UserModel extends AbstractModel
 {
 	protected String firstName;
 
@@ -33,7 +33,7 @@ public class PersonModel extends AbstractModel
 
 	protected LocalDate dateOfBirth;
 
-	@InjectLink( style = InjectLink.Style.ABSOLUTE, value = "persons/${instance.id}",
+	@InjectLink( style = InjectLink.Style.ABSOLUTE, value = "users/${instance.id}",
 		type = "application/json", rel = "self" )
 	protected Link selfUri;
 

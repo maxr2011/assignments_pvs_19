@@ -14,35 +14,37 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.api.states.persons;
+package de.fhws.fiw.pvs.assignment_5.zikzak.api.states.users;
 
 
-import de.fhws.fiw.pvs.assignment_5.example.database.DaoFactory;
-import de.fhws.fiw.pvs.assignment_5.example.models.PersonModel;
-import de.fhws.fiw.pvs.assignment_5.sutton.api.states.delete.AbstractDeleteState;
+
+import de.fhws.fiw.pvs.assignment_5.sutton.api.states.put.AbstractPutState;
 import de.fhws.fiw.pvs.assignment_5.sutton.database.results.NoContentResult;
 import de.fhws.fiw.pvs.assignment_5.sutton.database.results.SingleModelResult;
+import de.fhws.fiw.pvs.assignment_5.zikzak.database.DaoFactory;
+import de.fhws.fiw.pvs.assignment_5.zikzak.models.UserModel;
 
 import javax.ws.rs.core.MediaType;
 
-public class DeleteSinglePerson extends AbstractDeleteState<PersonModel>
+public class PutSingleUser extends AbstractPutState<UserModel>
 {
-	public DeleteSinglePerson( )
+	public PutSingleUser( )
 	{
 	}
 
-	@Override protected SingleModelResult<PersonModel> loadModel( )
+	@Override protected SingleModelResult<UserModel> loadModel( )
 	{
-		return DaoFactory.getInstance( ).getPersonDao( ).readById( this.modelIdToDelete );
+		return DaoFactory.getInstance( ).getUserDao( ).readById( this.modelToUpdate.getId( ) );
 	}
 
-	@Override protected NoContentResult deleteModel( )
+	@Override protected NoContentResult updateModel( )
 	{
-		return DaoFactory.getInstance( ).getPersonDao( ).delete( this.modelIdToDelete );
+		return DaoFactory.getInstance( ).getUserDao( ).update( this.modelToUpdate );
 	}
 
 	@Override protected void defineTransitionLinks( )
 	{
-		addLink( PersonUri.REL_PATH, PersonRelTypes.GET_ALL_PERSONS, MediaType.APPLICATION_JSON );
+		addLink( UserUri.REL_PATH_ID, UserRelTypes.GET_SINGLE_USER, MediaType.APPLICATION_JSON,
+			this.modelToUpdate.getId( ) );
 	}
 }

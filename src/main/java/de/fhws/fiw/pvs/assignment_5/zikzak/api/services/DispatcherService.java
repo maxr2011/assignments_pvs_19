@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package de.fhws.fiw.pvs.assignment_5.example.api.services;
+package de.fhws.fiw.pvs.assignment_5.zikzak.api.services;
 
-import de.fhws.fiw.pvs.assignment_5.example.api.states.DispatcherState;
 import de.fhws.fiw.pvs.assignment_5.sutton.api.services.AbstractService;
+import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.DispatcherState;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
