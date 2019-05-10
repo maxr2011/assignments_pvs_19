@@ -20,6 +20,7 @@ public class CRUDMain {
 
         // 2. get specific last name Persons
         PersonListOutput(CRUDOperations.getAllPersonsWithSpecificLastName("Mueller"));
+        PersonListOutput(CRUDOperations.getAllPersonsWithSpecificLastName("MuellerUnknown"));
         System.out.println();
 
         // 3. get all Persons

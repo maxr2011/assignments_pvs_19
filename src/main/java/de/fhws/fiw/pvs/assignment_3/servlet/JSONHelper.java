@@ -10,7 +10,7 @@ public class JSONHelper {
     // json object wrapper
     public static String generateJSONFromList(List<Person> specificPersonList) {
 
-        isNotEmpty(specificPersonList);
+        //isNotEmpty(specificPersonList);
 
         String JSON = Consts.JSON_BRACKETS_OPEN;
 
