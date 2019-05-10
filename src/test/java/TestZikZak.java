@@ -17,6 +17,7 @@
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
 import de.fhws.fiw.pvs.assignment_5.sutton.client.Link;
+import de.fhws.fiw.pvs.assignment_5.zikzak.models.MessageModel;
 import de.fhws.fiw.pvs.assignment_5.zikzak.models.UserModel;
 import okhttp3.*;
 import org.junit.After;
@@ -32,12 +33,18 @@ import static org.junit.Assert.assertTrue;
 
 public class TestZikZak
 {
+	// user
 	private final static String BASE_URL = "http://localhost:8080/zikzak/api";
 	private final static String CREATE_USER = "createUser";
 	private final static String GET_ALL_USERS = "getAllUsers";
 	private final static String UPDATE_SINGLE_USER = "updateUser";
 	private final static String DELETE_SINGLE_USER = "deleteUser";
 	private final static String GET_SINGLE_USER = "getUser";
+
+	// message
+	private final static String CREATE_MESSAGE = "createMessage";
+	private final static String GET_ALL_MESSAGES = "getAllMessages";
+	private final static String GET_SINGLE_MESSAGE = "getMessage";
 
 	private OkHttpClient client;
 
@@ -78,6 +85,23 @@ public class TestZikZak
 	}
 
 	@Test
+	public void testPostMessageForUser( )
+	{
+		final Optional<Link> createMessageLink = callDispatcherAndGetHeaderLinkWithRelType( CREATE_MESSAGE );
+
+		final Link theCreateLink = createMessageLink.get( );
+		final MessageModel message = new MessageModel( );
+		message.setMessageText("Hello World!");
+		final RequestBody body = RequestBody.create(
+				MediaType.parse( theCreateLink.getMediaType( ) ),
+				this.genson.serialize( message )
+		);
+		final Request requestPost = new Request.Builder( ).url( theCreateLink.getUrl( ) ).post( body ).build( );
+		final Response responsePost = executeRequest( requestPost );
+		assertTrue("Object was not created!", responsePost.code( ) == 201);
+	}
+
+	@Test
 	public void testGetCollection( )
 	{
 		final Optional<Link> getAllUsers = callDispatcherAndGetHeaderLinkWithRelType( GET_ALL_USERS );
@@ -90,6 +114,19 @@ public class TestZikZak
 		final Response responseGetAll = executeRequest( requestGetAll );
 
 		assertTrue( "Get request failed!", responseGetAll.code( ) == 200 );
+	}
+
+	@Test
+	public void testGetMessages( )
+	{
+		final Optional<Link> getAllMessages = callDispatcherAndGetHeaderLinkWithRelType( GET_ALL_MESSAGES );
+
+		final Link theGetAllLink = getAllMessages.get( );
+		final Request requestGetAll = new Request.Builder( ).url( theGetAllLink.getUrl( ) )
+				.get( )
+				.build( );
+
+		final Response responseGetAll = executeRequest( requestGetAll );
 	}
 
 	@Test
