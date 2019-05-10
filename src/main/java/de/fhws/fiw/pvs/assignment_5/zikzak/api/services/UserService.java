@@ -58,9 +58,9 @@ public class UserService extends AbstractService
 
 	@POST
 	@Consumes( MediaType.APPLICATION_JSON )
-	public Response createSingleUsers( final UserModel personModel )
+	public Response createSingleUsers( final UserModel userModel )
 	{
-		return new PostNewUser( ).setModelToStore( personModel )
+		return new PostNewUser( ).setModelToStore( userModel )
 								   .setUriInfo( this.uriInfo )
 								   .setRequest( this.request )
 								   .setHttpServletRequest( this.httpServletRequest )
@@ -71,10 +71,10 @@ public class UserService extends AbstractService
 	@PUT
 	@Path( "{id}" )
 	@Consumes( MediaType.APPLICATION_JSON )
-	public Response updateSingleUsers( @PathParam( "id" ) final long id, final UserModel personModel )
+	public Response updateSingleUsers( @PathParam( "id" ) final long id, final UserModel userModel )
 	{
-		personModel.setId( id );
-		return new PutSingleUser( ).setModelToUpdate( personModel )
+		userModel.setId( id );
+		return new PutSingleUser( ).setModelToUpdate( userModel )
 									 .setUriInfo( this.uriInfo )
 									 .setRequest( this.request )
 									 .setHttpServletRequest( this.httpServletRequest )
