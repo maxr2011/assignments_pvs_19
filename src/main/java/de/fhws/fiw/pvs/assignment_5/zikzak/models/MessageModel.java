@@ -3,12 +3,13 @@ package de.fhws.fiw.pvs.assignment_5.zikzak.models;
 import com.owlike.genson.annotation.JsonConverter;
 import com.owlike.genson.annotation.JsonIgnore;
 import de.fhws.fiw.pvs.assignment_5.sutton.api.converter.LinkConverter;
+import de.fhws.fiw.pvs.assignment_5.sutton.models.AbstractModel;
 import org.glassfish.jersey.linking.InjectLink;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.Link;
 
-public class MessageModel {
+public class MessageModel extends AbstractModel {
 
     @InjectLink( style = InjectLink.Style.ABSOLUTE, value = "messages/${instance.id}", type = "application/json", rel = "self" )
     protected Link selfUri;	// self identifier
