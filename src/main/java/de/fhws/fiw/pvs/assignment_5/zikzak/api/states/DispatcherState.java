@@ -17,6 +17,8 @@
 package de.fhws.fiw.pvs.assignment_5.zikzak.api.states;
 
 import de.fhws.fiw.pvs.assignment_5.sutton.api.states.get.AbstractGetDispatcherState;
+import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.messages.MessageRelTypes;
+import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.messages.MessageUri;
 import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.users.UserRelTypes;
 import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.users.UserUri;
 
@@ -28,5 +30,8 @@ public class DispatcherState extends AbstractGetDispatcherState
 	{
 		addLink( UserUri.REL_PATH, UserRelTypes.CREATE_USER, MediaType.APPLICATION_JSON );
 		addLink( UserUri.REL_PATH, UserRelTypes.GET_ALL_USERS, MediaType.APPLICATION_JSON );
+
+		addLink(MessageUri.REL_PATH, MessageRelTypes.CREATE_MESSAGE, MediaType.APPLICATION_JSON);
+		addLink(MessageUri.REL_PATH, MessageRelTypes.GET_ALL_MESSAGES, MediaType.APPLICATION_JSON);
 	}
 }
