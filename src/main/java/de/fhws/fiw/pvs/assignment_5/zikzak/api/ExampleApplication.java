@@ -18,6 +18,7 @@ package de.fhws.fiw.pvs.assignment_5.zikzak.api;
 
 import de.fhws.fiw.pvs.assignment_5.sutton.api.AbstractApplication;
 import de.fhws.fiw.pvs.assignment_5.zikzak.api.services.DispatcherService;
+import de.fhws.fiw.pvs.assignment_5.zikzak.api.services.MessageService;
 import de.fhws.fiw.pvs.assignment_5.zikzak.api.services.UserService;
 
 import javax.ws.rs.ApplicationPath;
@@ -32,6 +33,7 @@ public class ExampleApplication extends AbstractApplication
 		final Set<Class<?>> returnValue = new HashSet<>( );
 
 		returnValue.add( UserService.class );
+		returnValue.add( MessageService.class );
 		returnValue.add( DispatcherService.class );
 
 		return returnValue;
