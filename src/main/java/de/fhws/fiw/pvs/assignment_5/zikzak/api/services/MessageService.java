@@ -45,7 +45,7 @@ public class MessageService extends AbstractService {
 
     @POST
     @Consumes( MediaType.APPLICATION_JSON )
-    public Response createSingleUsers( final MessageModel messageModel )
+    public Response createSingleMessage( final MessageModel messageModel )
     {
         return new PostNewMessage( ).setModelToStore( messageModel )
                 .setUriInfo( this.uriInfo )
