@@ -16,6 +16,7 @@
 
 package de.fhws.fiw.pvs.assignment_5.zikzak.database;
 
+import de.fhws.fiw.pvs.assignment_5.zikzak.database.inmemory.MessageInMemoryStorage;
 import de.fhws.fiw.pvs.assignment_5.zikzak.database.inmemory.UserInMemoryStorage;
 
 public class DaoFactory
@@ -33,14 +34,20 @@ public class DaoFactory
 	}
 
 	private final UserDao userDao;
+	private final MessageDao messageDao;
 
 	private DaoFactory( )
 	{
 		this.userDao = new UserInMemoryStorage( );
+		this.messageDao = new MessageInMemoryStorage( );
 	}
 
 	public UserDao getUserDao( )
 	{
 		return this.userDao;
+	}
+
+	public MessageDao getMessageDao( ) {
+		return this.messageDao;
 	}
 }
