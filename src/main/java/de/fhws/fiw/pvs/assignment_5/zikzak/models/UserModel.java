@@ -27,7 +27,8 @@ import javax.ws.rs.core.Link;
 import java.time.LocalDate;
 import java.util.List;
 
-public class UserModel extends AbstractModel
+public class
+UserModel extends AbstractModel
 {
 	protected String firstName;
 
@@ -87,7 +88,7 @@ public class UserModel extends AbstractModel
 	public void addMessageText(String messageText) {
 		MessageModel newMessage = new MessageModel();
 		newMessage.setMessageText(messageText);
-		newMessage.setUserUri(selfUri);
+		newMessage.setUserId(id);
 		this.userMessages.add(newMessage);
 	}
 

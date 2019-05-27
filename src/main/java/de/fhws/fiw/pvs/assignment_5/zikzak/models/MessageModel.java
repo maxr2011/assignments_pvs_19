@@ -8,6 +8,10 @@ import org.glassfish.jersey.linking.InjectLink;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.core.Link;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MessageModel extends AbstractModel {
 
@@ -15,9 +19,19 @@ public class MessageModel extends AbstractModel {
     protected Link selfUri;	// self identifier
 
     @NotNull
-    protected Link userUri; // user Uri
+    protected long userId;
 
     protected String messageText;
+
+    protected Map<Long, Boolean> voting;
+
+    protected Timestamp timeOfCreation;
+
+    public MessageModel() {
+        timeOfCreation = new Timestamp(System.currentTimeMillis());
+        voting = new HashMap<>();
+    }
+
 
     public String getMessageText() {
         return messageText;
@@ -27,12 +41,36 @@ public class MessageModel extends AbstractModel {
         this.messageText = messageText;
     }
 
-    public Link getUserUri() {
-        return userUri;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setUserUri(Link userUri) {
-        this.userUri = userUri;
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public void vote(long userId, boolean vote) {
+        voting.put(userId, vote);
+    }
+
+    public void upvote(long userId) {
+        vote(userId, true);
+    }
+
+    public void downvote(long userId) {
+        vote(userId, false);
+    }
+
+    public Map<Long, Boolean> getVoting() {
+        return voting;
+    }
+
+    public void setVoting(Map<Long, Boolean> voting) {
+        this.voting = voting;
+    }
+
+    public Timestamp getTimeOfCreation() {
+        return timeOfCreation;
     }
 
     @JsonConverter( LinkConverter.class )
