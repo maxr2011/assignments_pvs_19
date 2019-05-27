@@ -14,18 +14,25 @@
  * limitations under the License.
  */
 
+import com.owlike.genson.GenericType;
 import com.owlike.genson.Genson;
 import com.owlike.genson.GensonBuilder;
 import de.fhws.fiw.pvs.assignment_5.sutton.client.Link;
 import de.fhws.fiw.pvs.assignment_5.zikzak.models.MessageModel;
 import de.fhws.fiw.pvs.assignment_5.zikzak.models.UserModel;
 import okhttp3.*;
+import org.apache.catalina.User;
+import org.apache.catalina.UserDatabase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -45,6 +52,7 @@ public class TestZikZak
 	private final static String CREATE_MESSAGE = "createMessage";
 	private final static String GET_ALL_MESSAGES = "getAllMessages";
 	private final static String GET_SINGLE_MESSAGE = "getMessage";
+	private final static String UPDATE_SINGLE_MESSAGE = "updateMessage";
 
 	private OkHttpClient client;
 
@@ -85,13 +93,45 @@ public class TestZikZak
 	}
 
 	@Test
-	public void testPostMessageForUser( )
+	public void testPostAnon( )
+	{
+		final Optional<Link> createUserLink = callDispatcherAndGetHeaderLinkWithRelType( CREATE_USER );
+
+		final Link theCreateLink = createUserLink.get( );
+		final UserModel user = new UserModel( );
+		final RequestBody body = RequestBody.create(
+				MediaType.parse( theCreateLink.getMediaType( ) ),
+				this.genson.serialize( user ) );
+		final Request requestPost = new Request.Builder( ).url( theCreateLink.getUrl( ) ).post( body ).build( );
+		final Response responsePost = executeRequest( requestPost );
+		assertTrue( "Object was not created!", responsePost.code( ) == 201 );
+	}
+
+	@Test
+	public void testPostMessageForUser( ) throws Exception
 	{
 		final Optional<Link> createMessageLink = callDispatcherAndGetHeaderLinkWithRelType( CREATE_MESSAGE );
 
 		final Link theCreateLink = createMessageLink.get( );
 		final MessageModel message = new MessageModel( );
 		message.setMessageText("Hello World!");
+
+		final Optional<Link> getAllUsers = callDispatcherAndGetHeaderLinkWithRelType( GET_ALL_USERS );
+
+		final Link theGetAllLink = getAllUsers.get( );
+		final Request requestGetAll = new Request.Builder( ).url( theGetAllLink.getUrl( ) )
+				.get( )
+				.build( );
+
+		final Response responseGetAll = executeRequest( requestGetAll );
+
+		String usersJson = responseGetAll.body().string();
+		System.out.println(usersJson);
+
+		List<UserModel> userModelList = this.genson.deserialize(usersJson, new GenericType<List<UserModel>>(){});
+
+		message.setUserId(userModelList.get(0).getId());
+
 		final RequestBody body = RequestBody.create(
 				MediaType.parse( theCreateLink.getMediaType( ) ),
 				this.genson.serialize( message )
@@ -112,6 +152,7 @@ public class TestZikZak
 				.build( );
 
 		final Response responseGetAll = executeRequest( requestGetAll );
+		List<UserModel> userModelList = this.genson.deserialize(responseGetAll.message(), List.class);
 
 		assertTrue( "Get request failed!", responseGetAll.code( ) == 200 );
 	}
@@ -165,6 +206,68 @@ public class TestZikZak
 		final RequestBody putBody = RequestBody.create(
 				MediaType.parse( linkToUpdate.get( ).getMediaType( ) ),
 				this.genson.serialize( userResponse ) );
+		final Request requestPut = new Request.Builder( ).url( linkToUpdate.get( ).getUrl( ) ).put( putBody ).build( );
+		final Response responsePut = executeRequest( requestPut );
+		assertTrue( "Object was not updated!", responsePut.code( ) == 204 );
+
+	}
+
+	@Test
+	public void testPutMessage( ) throws Exception {
+
+		/* Get single message that was created before */
+		final Optional<Link> createMessageLink = callDispatcherAndGetHeaderLinkWithRelType( CREATE_MESSAGE );
+
+		final Link theCreateLink = createMessageLink.get( );
+		final MessageModel message = new MessageModel( );
+		message.setMessageText("Hello New Message!");
+
+		final Optional<Link> getAllUsers = callDispatcherAndGetHeaderLinkWithRelType( GET_ALL_USERS );
+
+		final Link theGetAllLink = getAllUsers.get( );
+		final Request requestGetAll = new Request.Builder( ).url( theGetAllLink.getUrl( ) )
+				.get( )
+				.build( );
+
+		final Response responseGetAll = executeRequest( requestGetAll );
+
+		String usersJson = responseGetAll.body().string();
+		System.out.println(usersJson);
+
+		List<UserModel> userModelList = this.genson.deserialize(usersJson, new GenericType<List<UserModel>>(){});
+
+		long userIdForMessage = userModelList.get(0).getId();
+
+		message.setUserId(userIdForMessage);
+
+		final RequestBody body = RequestBody.create(
+				MediaType.parse( theCreateLink.getMediaType( ) ),
+				this.genson.serialize( message )
+		);
+		final Request requestPost = new Request.Builder( ).url( theCreateLink.getUrl( ) ).post( body ).build( );
+		final Response responsePost = executeRequest( requestPost );
+
+		// message was just created
+		final String locationHeader = responsePost.header( "Location" );
+		final Request requestGetSingle = new Request.Builder( ).url( locationHeader ).get( ).build( );
+		final Response responseGetSingle = executeRequest( requestGetSingle );
+
+		final MessageModel messageReponse =
+				this.genson.deserialize( responseGetSingle.body().string(), MessageModel.class);
+
+		/* Update this message */
+		final Optional<Link> linkToUpdate = getResponseHeaderLink( responseGetSingle, UPDATE_SINGLE_MESSAGE);
+		assertTrue( String.format( "No link of relType '%s' found.", UPDATE_SINGLE_MESSAGE ),
+				linkToUpdate.isPresent( ) );
+
+		System.out.println(messageReponse.toString());
+
+		messageReponse.setMessageText("Hello new new new Message!");
+		messageReponse.upvote(userIdForMessage);
+
+		final RequestBody putBody = RequestBody.create(
+				MediaType.parse( linkToUpdate.get( ).getMediaType( ) ),
+				this.genson.serialize( messageReponse ) );
 		final Request requestPut = new Request.Builder( ).url( linkToUpdate.get( ).getUrl( ) ).put( putBody ).build( );
 		final Response responsePut = executeRequest( requestPut );
 		assertTrue( "Object was not updated!", responsePut.code( ) == 204 );
