@@ -5,8 +5,11 @@ import de.fhws.fiw.pvs.assignment_5.sutton.api.services.AbstractService;
 import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.messages.GetAllMessages;
 import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.messages.GetSingleMessage;
 import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.messages.PostNewMessage;
+import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.messages.PutSingleMessage;
 import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.users.GetAllUsers;
+import de.fhws.fiw.pvs.assignment_5.zikzak.api.states.users.PutSingleUser;
 import de.fhws.fiw.pvs.assignment_5.zikzak.models.MessageModel;
+import de.fhws.fiw.pvs.assignment_5.zikzak.models.UserModel;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -48,6 +51,20 @@ public class MessageService extends AbstractService {
     public Response createSingleMessage( final MessageModel messageModel )
     {
         return new PostNewMessage( ).setModelToStore( messageModel )
+                .setUriInfo( this.uriInfo )
+                .setRequest( this.request )
+                .setHttpServletRequest( this.httpServletRequest )
+                .setContext( this.context )
+                .build( );
+    }
+
+    @PUT
+    @Path( "{id}" )
+    @Consumes( MediaType.APPLICATION_JSON )
+    public Response updateSingleMessage( @PathParam( "id" ) final long id, final MessageModel messageModel )
+    {
+        messageModel.setId( id );
+        return new PutSingleMessage( ).setModelToUpdate( messageModel )
                 .setUriInfo( this.uriInfo )
                 .setRequest( this.request )
                 .setHttpServletRequest( this.httpServletRequest )
