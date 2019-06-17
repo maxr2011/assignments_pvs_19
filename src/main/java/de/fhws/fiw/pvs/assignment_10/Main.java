@@ -8,13 +8,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Main {
 
-    static AtomicInteger atomicInteger = new AtomicInteger(0);
+    private static Integer temp;
+    public static Integer[] A = {5, 7, 8, 1};
+    public static Integer[] output = {0, 0, 0, 0};
 
     public static void main(String[] args) {
 
         // initialise some values
-        int N = 4;
-        Integer[] A = {5, 7, 8, 1};
+        temp = 0;
 
         // measure time here
         Integer[] B = sequentialPrefix(A);
@@ -49,11 +50,14 @@ public class Main {
 
     private static Integer[] parallelPrefix(Integer[] input) {
         // todo implement
-        Integer[] output = new Integer[input.length];
 
-        for(Integer it : input) {
+        for(int i = 0; i < output.length; i++) {
+            final int q = i;
             new Thread(() -> {
-                // todo implement parallel
+                for(Integer j : input) {
+                    output[temp++] += j;
+                    if(temp-1 == q) break;
+                }
             }).start();
         }
 
